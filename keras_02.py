@@ -23,6 +23,6 @@ predictions = vgg_model.predict(processed_img)  # 예측 결과 얻음
 label = decode_predictions(predictions)  # 사람이 볼 수 있게 결과를 바꿔줌 (class Id, class name, 확률)
 print(label)
 
-cv2.imshow('frame', img)
+cv2.imshow('', img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
