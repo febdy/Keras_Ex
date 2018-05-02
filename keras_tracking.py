@@ -124,6 +124,11 @@ while True:
             cv2.rectangle(foreground_display, p1, p2, (255, 0, 0), 2, 1)
             cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
 
+            detected_face = frame[int(bbox[1]):int(bbox[1] + bbox[3]), int(bbox[0]):int(bbox[0] + bbox[2])]
+            detected_face = imutils.resize(detected_face, 2 * h, 2 * x)
+
+            frame[10: 10+detected_face.shape[1], 10: 10+detected_face.shape[0]] = detected_face
+
         cv2.imshow('Face Detector', frame)
 
         if cv2.waitKey(1) == 27:
