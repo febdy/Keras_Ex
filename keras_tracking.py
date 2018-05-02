@@ -4,7 +4,7 @@ from keras.models import load_model
 import numpy as np
 import imutils
 import cv2
-
+from img_video_ex.conn_pymongo import insert_test
 
 # 얼굴 탐지
 # conda_path = 'C:/Users/feb29/Anaconda3/pkgs/opencv-3.4.1-py36_200/Library/etc/haarcascades/'
@@ -95,6 +95,8 @@ while True:
                 (not_face, face) = model.predict(img)[0]
 
                 label = "face" if face > not_face else "Not face"
+
+                insert_test()
 
                 if label == "face":
                     bg = frame.copy()
