@@ -7,12 +7,12 @@ import cv2
 
 
 # 얼굴 탐지
-conda_path = 'C:/Users/feb29/Anaconda3/pkgs/opencv-3.4.1-py36_200/Library/etc/haarcascades/'
+# conda_path = 'C:/Users/feb29/Anaconda3/pkgs/opencv-3.4.1-py36_200/Library/etc/haarcascades/'
+conda_path = 'C:/Users/BIT-USER/Anaconda3/Lib/site-packages/cv2/data/'
 face_cascade = cv2.CascadeClassifier(conda_path + 'haarcascade_frontalface_default.xml')
-# face_cascade = cv2.CascadeClassifier(conda_path + 'haarcascade_frontalface_default.xml')
 
-# video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/moms.mp4')
-video = cv2.VideoCapture('C:/Users/feb29/PycharmProjects/OpenCV_Ex/HUN.mp4')
+video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN.mp4')
+# video = cv2.VideoCapture('C:/Users/feb29/PycharmProjects/OpenCV_Ex/HUN.mp4')
 model = load_model('face_ex.model')
 scaling_factor = 0.75
 kernel = np.ones((3, 3), np.uint8)
@@ -84,7 +84,7 @@ while True:
 
         if is_face is -1:  # 얼굴이 잡히지 않았을 때
             for (x, y, w, h) in face_rects:
-                print("얼굴안잡는중")
+                print("얼굴안잡는중", is_face)
                 img2 = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
                 img = cv2.resize(img2, (28, 28))
@@ -95,13 +95,8 @@ while True:
                 (not_face, face) = model.predict(img)[0]
 
                 label = "face" if face > not_face else "Not face"
-                proba = face if face > not_face else not_face
-                label = "{}: {:.2f}%".format(label, proba * 100)
-                output = imutils.resize(frame, width=400)
-                cv2.putText(frame, label, (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
                 if label == "face":
-                    print("머임")
                     bg = frame.copy()
                     bbox = (x, y, w, h)
                     is_face = 1
