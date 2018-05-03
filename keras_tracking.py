@@ -70,6 +70,8 @@ def mask_array(array, imask):
 
 is_face = -1
 
+cnt = 0
+
 while True:
     ret, frame = video.read()
 
@@ -81,6 +83,8 @@ while True:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+        print(cnt)
 
         if is_face is -1:  # 얼굴이 잡히지 않았을 때
             for (x, y, w, h) in face_rects:
@@ -96,11 +100,11 @@ while True:
 
                 label = "face" if face > not_face else "Not face"
 
-                insert_test()
-
                 if label == "face":
                     bg = frame.copy()
                     bbox = (x, y, w, h)
+                    def_x = x  # 움직임 계산할 때 기준이 되는 x, y
+                    def_y = y
                     is_face = 1
                     tracker = setup_tracker(2)
                     tracking = tracker.init(frame, bbox)
@@ -127,9 +131,16 @@ while True:
             cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
 
             detected_face = frame[int(bbox[1]):int(bbox[1] + bbox[3]), int(bbox[0]):int(bbox[0] + bbox[2])]
-            detected_face = imutils.resize(detected_face, 2 * h, 2 * x)
+            detected_face = imutils.resize(detected_face, 2 * h, 2 * w)
 
             frame[10: 10+detected_face.shape[1], 10: 10+detected_face.shape[0]] = detected_face
+
+            if def_x - p1[0] > 2:
+                print("좌우로 움직임")
+                cnt = cnt+1
+            if def_y - p1[1] > 2:
+                print("상하로 움직임")
+                cnt = cnt+1
 
         cv2.imshow('Face Detector', frame)
 
@@ -137,6 +148,8 @@ while True:
             break
     else:
         break
+
+insert_test(cnt)
 
 video.release()
 cv2.destroyAllWindows()

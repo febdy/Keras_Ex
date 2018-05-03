@@ -16,11 +16,11 @@ foreground = np.zeros_like(current_frame_img, dtype=np.uint8)
 for i, row in enumerate(mask_indexes):
     foreground[i, row] = current_frame_img[i, row]
 
-cv2.imshow('frmae1', bg_img)
-cv2.imshow('frmae2', current_frame_img)
-cv2.imshow('frmae3', diff)
-cv2.imshow('frmae4', mask)
-cv2.imshow('frmae5', mask_thresh)
-cv2.imshow('frmae6', foreground)
+cv2.imshow('bg_img', bg_img)
+cv2.imshow('current_frame_img', current_frame_img)
+cv2.imshow('diff', diff)
+cv2.imshow('mask', mask)
+cv2.imshow('mask_threshold', mask_thresh)
+cv2.imshow('foreground', foreground)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
