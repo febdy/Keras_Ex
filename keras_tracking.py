@@ -11,7 +11,7 @@ from img_video_ex.conn_pymongo import insert_test
 conda_path = 'C:/Users/BIT-USER/Anaconda3/Lib/site-packages/cv2/data/'
 face_cascade = cv2.CascadeClassifier(conda_path + 'haarcascade_frontalface_default.xml')
 
-video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN.mp4')
+video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN2.mp4')
 # video = cv2.VideoCapture('C:/Users/feb29/PycharmProjects/OpenCV_Ex/HUN.mp4')
 model = load_model('face_ex.model')
 scaling_factor = 0.75
@@ -127,18 +127,23 @@ while True:
 
             p1 = (int(bbox[0]), int(bbox[1]))
             p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
+
+            if p1 == (0, 0):
+                is_face = -1
+                continue
             cv2.rectangle(foreground_display, p1, p2, (255, 0, 0), 2, 1)
             cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
 
+            print(p1, p2)
             detected_face = frame[int(bbox[1]):int(bbox[1] + bbox[3]), int(bbox[0]):int(bbox[0] + bbox[2])]
             detected_face = imutils.resize(detected_face, 2 * h, 2 * w)
 
             frame[10: 10+detected_face.shape[1], 10: 10+detected_face.shape[0]] = detected_face
 
-            if def_x - p1[0] > 2:
+            if def_x - p1[0] > 4:
                 print("좌우로 움직임")
                 cnt = cnt+1
-            if def_y - p1[1] > 2:
+            elif def_y - p1[1] > 4:
                 print("상하로 움직임")
                 cnt = cnt+1
 
