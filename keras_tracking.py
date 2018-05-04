@@ -11,7 +11,7 @@ from img_video_ex.conn_pymongo import insert_test
 conda_path = 'C:/Users/BIT-USER/Anaconda3/Lib/site-packages/cv2/data/'
 face_cascade = cv2.CascadeClassifier(conda_path + 'haarcascade_frontalface_default.xml')
 
-video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN2.mp4')
+video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN.mp4')
 # video = cv2.VideoCapture('C:/Users/feb29/PycharmProjects/OpenCV_Ex/HUN.mp4')
 model = load_model('face_ex.model')
 scaling_factor = 0.75
@@ -71,6 +71,7 @@ def mask_array(array, imask):
 is_face = -1
 
 cnt = 0
+chk_move = 0
 
 while True:
     ret, frame = video.read()
@@ -79,16 +80,15 @@ while True:
 
     if ret:
         frame = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
-
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         face_rects = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-        print(cnt)
+        print('cnt:', cnt)
 
         if is_face is -1:  # 얼굴이 잡히지 않았을 때
             for (x, y, w, h) in face_rects:
-                print("얼굴안잡는중", is_face)
+                print("얼굴안잡는중")
                 img2 = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
                 img = cv2.resize(img2, (28, 28))
@@ -134,18 +134,19 @@ while True:
             cv2.rectangle(foreground_display, p1, p2, (255, 0, 0), 2, 1)
             cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
 
-            print(p1, p2)
+            print('def_x:def_y', (def_x, def_y), 'p1_x:p1_y', p1)
+
             detected_face = frame[int(bbox[1]):int(bbox[1] + bbox[3]), int(bbox[0]):int(bbox[0] + bbox[2])]
-            detected_face = imutils.resize(detected_face, 2 * h, 2 * w)
+            detected_face = imutils.resize(detected_face, 3 * h, 3 * w)
 
             frame[10: 10+detected_face.shape[1], 10: 10+detected_face.shape[0]] = detected_face
 
-            if def_x - p1[0] > 4:
-                print("좌우로 움직임")
-                cnt = cnt+1
-            elif def_y - p1[1] > 4:
-                print("상하로 움직임")
-                cnt = cnt+1
+            if abs(def_x - p1[0]) > 4 or abs(def_y - p1[1]) > 4:
+                if chk_move == 0:
+                    cnt = cnt+1
+                    chk_move = 1
+            else:
+                chk_move = 0
 
         cv2.imshow('Face Detector', frame)
 
