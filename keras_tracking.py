@@ -11,7 +11,7 @@ from img_video_ex.conn_pymongo import insert_test
 conda_path = 'C:/Users/BIT-USER/Anaconda3/Lib/site-packages/cv2/data/'
 face_cascade = cv2.CascadeClassifier(conda_path + 'haarcascade_frontalface_default.xml')
 
-video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN.mp4')
+video = cv2.VideoCapture('C:/Users/BIT-USER/Desktop/python_workplace/HUN2.mp4')
 # video = cv2.VideoCapture('C:/Users/feb29/PycharmProjects/OpenCV_Ex/HUN.mp4')
 model = load_model('face_ex.model')
 scaling_factor = 0.75
